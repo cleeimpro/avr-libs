@@ -3,8 +3,6 @@
 #include <string.h>         // Requires strings library
 
 void I2C_RTC_setTime(uint8_t sec, uint8_t min, uint8_t hour) {
-    uint8_t am_pm = 0;
-
     if (sec > 59) {     // limit sec to 59
         sec = 59;
     }
