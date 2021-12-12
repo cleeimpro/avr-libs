@@ -127,7 +127,7 @@ void I2C_LCD_setCursorWOI2C(uint8_t col, uint8_t row);
  * 
  * @param str "string", array with characters
  */
-void I2C_LCD_print(uint8_t str[]);
+void I2C_LCD_print(char str[]);
 
 /** ===================================================
  * @brief function to print a single character (ASCII or custom)
@@ -135,7 +135,7 @@ void I2C_LCD_print(uint8_t str[]);
  * 
  * @param c Character (ASCII-code)
  */
-void I2C_LCD_printChar(uint8_t c);
+void I2C_LCD_printChar(char c);
 
 /** ===================================================
  * @brief function to dis/enable the LCD layer of the modul
