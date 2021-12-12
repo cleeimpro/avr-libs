@@ -90,7 +90,7 @@ void I2C_LCD_init(uint8_t cols, uint8_t lines)
     I2CMasterStop();    // stop the I2C connection
 }
 
-void I2C_LCD_print(uint8_t c[])
+void I2C_LCD_print(char c[])
 {
     I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
     // Send each char 
@@ -101,7 +101,7 @@ void I2C_LCD_print(uint8_t c[])
     I2CMasterStop();    // Stop I2C connection
 }
 
-void I2C_LCD_printChar(uint8_t c)
+void I2C_LCD_printChar(char c)
 {
     I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
     I2C_LCD_write(c);   // Send char as data
