@@ -1,81 +1,84 @@
-#include "I2C_RTC.h"
-#include <util/delay.h>
-#include <I2CMaster.h>
-#include <string.h>
+#include "I2C_RTC.h"        // Requires header file
+#include <I2CMaster.h>      // Requires I2CMaster lib by Peter Fleury
+#include <string.h>         // Requires strings library
 
-void I2C_RTC_setTime(uint8_t sec, uint8_t min, uint8_t hour, uint8_t timeformat) {
-    uint8_t am_pm_toggle = 0;
+void I2C_RTC_setTime(uint8_t sec, uint8_t min, uint8_t hour) {
+    uint8_t am_pm = 0;
 
-    sec = (sec > 59)? 59:sec;       // overflow-prev sec
-    min = (min > 59)? 59:min;       // overflow-prev min
-    hour = (hour > 23)? 23:hour;    // overflow-prev hour
+    if (sec > 59) {     // limit sec to 59
+        sec = 59;
+    }
 
-    // timeformat correction 
-    if (timeformat > 0) {
-        timeformat = 1;
+    if (min > 59) {     // limit min to 59
+        min = 59;
+    }
 
-        if (hour > 12) {
-            hour = hour - 12;
-            am_pm_toggle = 1;
-        }
+    if (hour > 23) {    // limit hour to 23
+        hour = 23;
     }
 
     I2CMasterStartWait(I2C_RTC_ADDRESS | I2C_RTC_WRITE);        // Start write to RTC (wait until BUS is free)
     I2CMasterWrite(I2C_RTC_ADDRESS_SECONDS);                    // Begin from Seconds
-    I2CMasterWrite(((sec%10) & 0x0F) | ((sec/10%10)<<4 & 0x70));   // Write seconds
-    I2CMasterWrite(((min%10) & 0x0F) | ((min/10%10)<<4 & 0x70));   // Write Minutes
-    I2CMasterWrite(((hour%10) & 0x0F) | ((hour/10%10)<<4 & 0x30) | (am_pm_toggle<<5) | (timeformat<<6));    // Write hour + set am/pm + set time format
-    I2CMasterStop();    // Stop I2C 
+    I2CMasterWrite((sec%10) | (sec/10)<<4);                     // Write seconds
+    I2CMasterWrite((min%10) | (min/10)<<4);                     // Write Minutes
+    I2CMasterWrite((hour%10) | (hour/10)<<4);                   // Write hour + set time format
+    I2CMasterStop();                                            // Stop I2C 
 }
 
 void I2C_RTC_setDate(uint8_t date, uint8_t month, uint8_t year) {
-    if (date > 31) {
+    if (date > 31) {      // Limit date to 31
         date = 31;
     }
 
-    if (month > 12) {
+    if (month > 12) {    // Limit month to 12
         month = 12;
     }
 
-    if (year > 99) {
+    if (year > 99) {     // Limit year to 99
         year = 99;
     }
 
     I2CMasterStartWait(I2C_RTC_ADDRESS | I2C_RTC_WRITE);        // Start write to RTC (wait until BUS is free)
-    I2CMasterWrite(I2C_RTC_ADDRESS_DAY);                       // Begin from Day
-    I2CMasterWrite(0x00);
-    I2CMasterWrite(((date%10) & 0x0F) | ((date/10%10)<<4 & 0x30));  // Write Date
-    I2CMasterWrite(((month%10) & 0x0F) | ((month/10%10)<<4 & 0x10));// Write Month
-    I2CMasterWrite(((year%10) & 0x0F) | ((year/10%10)<<4 & 0xF0));  // Write Year
-    I2CMasterStop();    // Stop I2C 
+    I2CMasterWrite(I2C_RTC_ADDRESS_DATE);                       // Begin from Date
+    I2CMasterWrite((date%10) | (date/10)<<4);                   // Write Date
+    I2CMasterWrite((month%10) | (month/10)<<4);                 // Write Month
+    I2CMasterWrite((year%10) | (year/10)<<4);                   // Write Year
+    I2CMasterStop();                                            // Stop I2C 
 }
 
-void I2C_RTC_initDateTime(uint8_t sec, uint8_t min, uint8_t hour, uint8_t day, uint8_t month, uint8_t year, uint8_t timeformat) {
-    I2C_RTC_setTime(sec, min, hour, timeformat);
-    I2C_RTC_setDate(day, month, year); 
+void I2C_RTC_setDateTime(uint8_t sec, uint8_t min, uint8_t hour, uint8_t date, uint8_t month, uint8_t year) {
+    I2C_RTC_setTime(sec, min, hour);            // set Time
+    I2C_RTC_setDate(date, month, year);         // set Date
 }
 
 void I2C_RTC_readTime(char* time) {
-    char temp[9];
+    char tmpTime[9];                                        // Temporary Array to save the read time
 
-    I2CMasterStartWait(I2C_RTC_ADDRESS | I2C_RTC_WRITE);
-    I2CMasterWrite(I2C_RTC_ADDRESS_SECONDS);
-    I2CMasterRepStart(I2C_RTC_ADDRESS | I2C_RTC_READ);
-    uint8_t sec = I2CMasterReadAck();
-    uint8_t min = I2CMasterReadAck();
-    uint8_t hour = I2CMasterReadNak();
-    I2CMasterStop();
+    I2CMasterStartWait(I2C_RTC_ADDRESS | I2C_RTC_WRITE);    // Start write to RTC (wait until BUS is free)
+    I2CMasterWrite(I2C_RTC_ADDRESS_SECONDS);                // Begin from seconds
+    I2CMasterRepStart(I2C_RTC_ADDRESS | I2C_RTC_READ);      // start read from RTC (repeated start)
+    uint8_t sec = I2CMasterReadAck();                       // save read value (sec) + ack
+    uint8_t min = I2CMasterReadAck();                       // save read value (min) + ack
+    uint8_t hour = I2CMasterReadNak();                      // save read value (hour) + nak
+    I2CMasterStop();                                        // stop I2C
 
     // hh:mm:ss
-    temp[0] = (hour>>4 & ((hour & 0x40) ? 0x01 : 0x03)) + 0x30;
-    temp[1] = (hour & 0x0F) + 0x30;
-    temp[2] = ':';
-    temp[3] = ((min & 0x70)>>4) + 0x30;
-    temp[4] = (min & 0x0F) + 0x30;
-    temp[5] = ':';
-    temp[6] = ((sec & 0x70)>>4) + 0x30;
-    temp[7] = (sec & 0x0F) + 0x30;
-    temp[8] = '\0';
+    tmpTime[0] = (hour>>4 & 0x03) + '0';    // ten's from hour
+    tmpTime[1] = (hour & 0x0F) + '0';       // unit place from hour
+    tmpTime[2] = ':';
+    tmpTime[3] = (min>>4 & 0x07) + '0';     // ten's from min
+    tmpTime[4] = (min & 0x0F) + '0';        // unit place from min
+    tmpTime[5] = ':';
+    tmpTime[6] = (sec>>4 & 0x07) + '0';     // ten's from sec
+    tmpTime[7] = (sec & 0x0F) + '0';        // unit place from sec
+    tmpTime[8] = '\0';                      // End Array
 
-    strcpy(time, temp);
+    strcpy(time, tmpTime);                  // copy into array time
+}
+
+void I2C_RTC_setSQW(uint8_t clk_speed) {
+    I2CMasterStartWait(I2C_RTC_ADDRESS | I2C_RTC_WRITE);        // Start write to RTC (wait until BUS is free) 
+    I2CMasterWrite(I2C_RTC_ADDRESS_ControlRegister);            // Start from Control Register
+    I2CMasterWrite(clk_speed << 3);                             // Write clock speed
+    I2CMasterStop();                                            // Stop I2C
 }
