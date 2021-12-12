@@ -3,7 +3,15 @@
 #include <util/delay.h>
 #include <I2CMaster.h>
 
-void I2C_LCD_DigitalNumber_customChars(){
+void I2C_LCD_DN_init()
+{
+    I2C_LCD_init(20, 4);
+    I2C_LCD_DN_customChars();
+    I2C_LCD_DN_clearColon();
+}
+
+void I2C_LCD_DN_customChars()
+{
     uint8_t upperBar[] = {0x1f, 0x1f, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00};
     uint8_t lowerBar[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x1F, 0x1F, 0x1F};
     uint8_t leftBar[] = {0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18, 0x18};
@@ -23,322 +31,37 @@ void I2C_LCD_DigitalNumber_customChars(){
     I2C_LCD_createChar(F_SLASH, fSlash);
 }
 
-void I2C_LCD_DigitalNumber_init() {
-    I2C_LCD_init(20, 4);
-    I2C_LCD_DigitalNumber_customChars();
-    clearDDot();
-}
-
-void writeDigital0(uint8_t col){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    I2C_LCD_setCursorWOI2C(col, 1);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 2);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 3);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 4);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
-}
-
-void writeDigital1(uint8_t col){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    I2C_LCD_setCursorWOI2C(col, 1);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 2);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 3);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 4);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
-}
-
-void writeDigital2(uint8_t col){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    I2C_LCD_setCursorWOI2C(col, 1);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 2);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 3);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_setCursorWOI2C(col, 4);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2CMasterStop();
-}
-
-void writeDigital3(uint8_t col){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    I2C_LCD_setCursorWOI2C(col, 1);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 2);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 3);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 4);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(FULL_BAR);    
-    I2CMasterStop();
-}
-
-void writeDigital4(uint8_t col){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    I2C_LCD_setCursorWOI2C(col, 1);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_setCursorWOI2C(col, 2);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(' ');
-    I2C_LCD_setCursorWOI2C(col, 3);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_setCursorWOI2C(col, 4);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(' ');
-    I2CMasterStop();
-}
-
-void writeDigital5(uint8_t col){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    I2C_LCD_setCursorWOI2C(col, 1);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_setCursorWOI2C(col, 2);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_setCursorWOI2C(col, 3);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 4);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
-}
-
-void writeDigital6(uint8_t col){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    I2C_LCD_setCursorWOI2C(col,1);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_setCursorWOI2C(col,2);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_setCursorWOI2C(col,3);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col,4);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
-}
-
-void writeDigital7(uint8_t col){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    I2C_LCD_setCursorWOI2C(col,1);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col,2);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col,3);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col,4);
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(' ');
-    I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
-}
-
-void writeDigital8(uint8_t col){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    I2C_LCD_setCursorWOI2C(col, 1);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 2);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 3);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col, 4);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
-}
-
-void writeDigital9(uint8_t col){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    I2C_LCD_setCursorWOI2C(col,1);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col,2);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col,3);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(UPPER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2C_LCD_setCursorWOI2C(col,4);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(LOWER_BAR);
-    I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
-}
-
-void writeDigitalNumber(uint8_t num, uint8_t col) {
+void I2C_LCD_DN_write(uint8_t num, uint8_t col)
+{
     switch (num)
     {
-    case 0:
-        writeDigital0(col);
-        break;
-    
-    case 1:
-        writeDigital1(col);
-        break;
-
-    case 2:
-        writeDigital2(col);
-        break;
-    
-    case 3:
-        writeDigital3(col);
-        break;
-    
-    case 4:
-        writeDigital4(col);
-        break;
-
-    case 5:
-        writeDigital5(col);
-        break;
-
-    case 6:
-        writeDigital6(col);
-        break;
-
-    case 7:
-        writeDigital7(col);
-        break;
-
-    case 8: 
-        writeDigital8(col);
-        break;
-
-    case 9:
-        writeDigital9(col);
-        break;
-
+    case 0: I2C_LCD_DN_write0(col); break;
+    case 1: I2C_LCD_DN_write1(col); break;
+    case 2: I2C_LCD_DN_write2(col); break;
+    case 3: I2C_LCD_DN_write3(col); break;
+    case 4: I2C_LCD_DN_write4(col); break;
+    case 5: I2C_LCD_DN_write5(col); break;
+    case 6: I2C_LCD_DN_write6(col); break;
+    case 7: I2C_LCD_DN_write7(col); break;
+    case 8: I2C_LCD_DN_write8(col); break; 
+    case 9: I2C_LCD_DN_write9(col); break;
     default:
-        I2C_LCD_setCursorWOI2C(col,1);
+        I2C_LCD_setCursorWOI2C(col, 1);
         I2C_LCD_write(B_SLASH);
         I2C_LCD_write(' ');
         I2C_LCD_write(' ');
         I2C_LCD_write(F_SLASH);
-        I2C_LCD_setCursorWOI2C(col,2);
+        I2C_LCD_setCursorWOI2C(col, 2);
         I2C_LCD_write(' ');
         I2C_LCD_write(B_SLASH);
         I2C_LCD_write(F_SLASH);
         I2C_LCD_write(' ');
-        I2C_LCD_setCursorWOI2C(col,3);
+        I2C_LCD_setCursorWOI2C(col, 3);
         I2C_LCD_write(UPPER_BAR);
         I2C_LCD_write(RIGHT_BAR);
         I2C_LCD_write(LEFT_BAR);
         I2C_LCD_write(UPPER_BAR);
-        I2C_LCD_setCursorWOI2C(col,4);
+        I2C_LCD_setCursorWOI2C(col, 4);
         I2C_LCD_write(UPPER_BAR);
         I2C_LCD_write(RIGHT_BAR);
         I2C_LCD_write(LEFT_BAR);
@@ -347,44 +70,306 @@ void writeDigitalNumber(uint8_t num, uint8_t col) {
     }
 }
 
-void writeDDot() 
+void I2C_LCD_DN_write0(uint8_t col)
+{
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_LCD_setCursorWOI2C(col, 1);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 2);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 3);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 4);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2CMasterStop();
+}
+
+void I2C_LCD_DN_write1(uint8_t col)
+{
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_LCD_setCursorWOI2C(col, 1);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 2);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 3);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 4);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2CMasterStop();
+}
+
+void I2C_LCD_DN_write2(uint8_t col)
+{
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_LCD_setCursorWOI2C(col, 1);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 2);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 3);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_setCursorWOI2C(col, 4);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2CMasterStop();
+}
+
+void I2C_LCD_DN_write3(uint8_t col)
+{
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_LCD_setCursorWOI2C(col, 1);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 2);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 3);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 4);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2CMasterStop();
+}
+
+void I2C_LCD_DN_write4(uint8_t col)
+{
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_LCD_setCursorWOI2C(col, 1);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_setCursorWOI2C(col, 2);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(' ');
+    I2C_LCD_setCursorWOI2C(col, 3);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_setCursorWOI2C(col, 4);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(' ');
+    I2CMasterStop();
+}
+
+void I2C_LCD_DN_write5(uint8_t col)
+{
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_LCD_setCursorWOI2C(col, 1);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_setCursorWOI2C(col, 2);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_setCursorWOI2C(col, 3);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 4);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2CMasterStop();
+}
+
+void I2C_LCD_DN_write6(uint8_t col)
+{
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_LCD_setCursorWOI2C(col, 1);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_setCursorWOI2C(col, 2);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_setCursorWOI2C(col, 3);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 4);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2CMasterStop();
+}
+
+void I2C_LCD_DN_write7(uint8_t col)
+{
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_LCD_setCursorWOI2C(col, 1);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 2);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 3);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 4);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_write(FULL_BAR);
+    I2CMasterStop();
+}
+
+void I2C_LCD_DN_write8(uint8_t col)
+{
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_LCD_setCursorWOI2C(col, 1);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 2);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 3);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 4);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2CMasterStop();
+}
+
+void I2C_LCD_DN_write9(uint8_t col)
+{
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_LCD_setCursorWOI2C(col, 1);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 2);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 3);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(UPPER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2C_LCD_setCursorWOI2C(col, 4);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(LOWER_BAR);
+    I2C_LCD_write(FULL_BAR);
+    I2CMasterStop();
+}
+
+void I2C_LCD_DN_printColon()
 {
     I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
 
-    I2C_LCD_setCursorWOI2C(10,2);
+    I2C_LCD_setCursorWOI2C(COLON_COL, 2);
     I2C_LCD_write(RIGHT_DOT);
     I2C_LCD_write(LEFT_DOT);
-    I2C_LCD_setCursorWOI2C(10,3);
+    I2C_LCD_setCursorWOI2C(COLON_COL, 3);
     I2C_LCD_write(RIGHT_DOT);
     I2C_LCD_write(LEFT_DOT);
-    ddotState = 1;
+    colonState = 1;
 
     I2CMasterStop();
 }
 
-void clearDDot() 
+void I2C_LCD_DN_clearColon()
 {
     I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
 
-    I2C_LCD_setCursorWOI2C(10,2);
-    I2C_LCD_write(0x20);
-    I2C_LCD_write(0x20);
-    I2C_LCD_setCursorWOI2C(10,3);
-    I2C_LCD_write(0x20);
-    I2C_LCD_write(0x20);
-    ddotState = 0;
+    I2C_LCD_setCursorWOI2C(COLON_COL, 2);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    I2C_LCD_setCursorWOI2C(COLON_COL, 3);
+    I2C_LCD_write(' ');
+    I2C_LCD_write(' ');
+    colonState = 0;
 
     I2CMasterStop();
 }
 
-void toggleDDot()
+void I2C_LCD_DN_toggleColon()
 {
     I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
-    if(ddotState){
-        clearDDot();
-    }else{
-        writeDDot();
+    if (colonState)
+    {
+        I2C_LCD_DN_clearColon();
     }
-    ddotState = !ddotState;
+    else
+    {
+        I2C_LCD_DN_printColon();
+    }
     I2CMasterStop();
 }
