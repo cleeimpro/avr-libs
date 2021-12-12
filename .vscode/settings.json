@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "i2c_lcd_digitalnumber.h": "c",
-        "i2c_lcd.h": "c"
+        "i2c_lcd.h": "c",
+        "inttypes.h": "c"
     }
 }
