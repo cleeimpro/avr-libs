@@ -17,15 +17,15 @@
  */
 
 
-#include "I2C_LCD.h"        // Requires I2C_LCD
-#include <util/delay.h>     // Requires Util delay
-#include <I2CMaster.h>      // Requires I2CMaster (by Peter Fleury)
+#include "I2C_LCD.h"        // requires I2C_LCD
+#include <util/delay.h>     // requires Util delay
+#include <I2CMaster.h>      // requires I2CMaster (by Peter Fleury)
 
 void I2C_LCD_push(uint8_t i2c_data)
 {
-    // Command with Enable HIGH
+    // command with Enable HIGH
     I2CMasterWrite((i2c_data & ~I2C_LCD_BL) | I2C_LCD_E | (backlight? I2C_LCD_BL:0x00));
-    // Command with Enable LOW
+    // command with Enable LOW
     I2CMasterWrite((i2c_data & ~I2C_LCD_BL & ~I2C_LCD_E) | (backlight? I2C_LCD_BL:0x00));
     _delay_us(100);     // delay to give processing time
 }
@@ -53,13 +53,13 @@ void I2C_LCD_init(uint8_t cols, uint8_t lines)
     _delay_ms(40);              // wait for the display to start
     I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // connect in write mode to display
 
-    // Set 8-Bit Mode
+    // set 8-Bit Mode
     I2C_LCD_command8bit(I2C_LCD_FUNCTIONSET | I2C_LCD_8BITMODE);
     _delay_us(4500);
     I2C_LCD_command8bit(I2C_LCD_FUNCTIONSET | I2C_LCD_8BITMODE);
     _delay_us(150);
     I2C_LCD_command8bit(I2C_LCD_FUNCTIONSET | I2C_LCD_8BITMODE);
-    // Set 4-Bit mode
+    // set 4-Bit mode
     I2C_LCD_command8bit(I2C_LCD_FUNCTIONSET | I2C_LCD_4BITMODE);
 
     // set lines in displayfunction storrage
@@ -73,17 +73,17 @@ void I2C_LCD_init(uint8_t cols, uint8_t lines)
     // set offset
     I2C_LCD_setRowOffsets(0x00, 0x40, 0x00 + cols, 0x40 + cols);
 
-    // Set 4-Bit mode & lines & font
+    // set 4-Bit mode & lines & font
     I2C_LCD_command4bit(I2C_LCD_FUNCTIONSET | displayfunction);
 
     // turn the display on with no cursor or blinking default
     displaycontrol = I2C_LCD_DISPLAY;  
     I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);
 
-    // Display clear
+    // display clear
     I2C_LCD_command4bit(I2C_LCD_CLEARDISPLAY);
 
-    // Entry mode set
+    // entry mode set
     displaymode = I2C_LCD_ENTRYLEFT | I2C_LCD_ENTRYSHIFTDECREMENT;
     I2C_LCD_command4bit(I2C_LCD_ENTRYMODESET | displaymode);
 
@@ -92,20 +92,20 @@ void I2C_LCD_init(uint8_t cols, uint8_t lines)
 
 void I2C_LCD_print(char c[])
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
-    // Send each char 
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    // send each char 
     for (uint8_t i = 0; c[i] != '\0'; ++i)
     {
         I2C_LCD_write(c[i]);    // send char as data
     }
-    I2CMasterStop();    // Stop I2C connection
+    I2CMasterStop();    // stop I2C connection
 }
 
 void I2C_LCD_printChar(char c)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
-    I2C_LCD_write(c);   // Send char as data
-    I2CMasterStop();    // Stop I2C connection
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    I2C_LCD_write(c);   // send char as data
+    I2CMasterStop();    // stop I2C connection
 }
 
 void I2C_LCD_setRowOffsets(uint8_t row1, uint8_t row2, uint8_t row3, uint8_t row4)
@@ -118,114 +118,114 @@ void I2C_LCD_setRowOffsets(uint8_t row1, uint8_t row2, uint8_t row3, uint8_t row
 
 void I2C_LCD_setCursorWOI2C(uint8_t col, uint8_t row)
 {
-    col = (col >= numcols) ? numcols : col;     // Limit to initialized cols
-    row = (row >= numlines) ? numlines : row;     // Limit to initialized lines
+    col = (col >= numcols) ? numcols : col;         // limit to initialized cols
+    row = (row >= numlines) ? numlines : row;       // limit to initialized lines
 
-    I2C_LCD_command4bit(I2C_LCD_SETDDRAMADDR | ((col-1) + row_offsets[row-1])); // Send row/col address
+    I2C_LCD_command4bit(I2C_LCD_SETDDRAMADDR | ((col-1) + row_offsets[row-1])); // send row/col address
 }
 
 void I2C_LCD_setCursor(uint8_t col, uint8_t row)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
-    I2C_LCD_setCursorWOI2C(col, row);                   // Send row/col to LCD
-    I2CMasterStop();                                    // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    I2C_LCD_setCursorWOI2C(col, row);                   // send row/col to LCD
+    I2CMasterStop();                                    // stop I2C connection to LCD
 }
 
 void I2C_LCD_cursor(uint8_t state)
 {
-    displaycontrol = displaycontrol state?( | I2C_LCD_CURSOR):(& ~I2C_LCD_CURSOR);  // Set cursor status
+    displaycontrol = displaycontrol state?( | I2C_LCD_CURSOR):(& ~I2C_LCD_CURSOR);  // set cursor status
 
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // Send displycontrols
-    I2CMasterStop();                                                // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // send displycontrols
+    I2CMasterStop();                                                // stop I2C connection to LCD
 }
 
 void I2C_LCD_blink(uint8_t state)
 {
-    displaycontrol = displaycontrol state?( | I2C_LCD_BLINK):(& ~I2C_LCD_BLINK);  // Set cursor blink status
+    displaycontrol = displaycontrol state?( | I2C_LCD_BLINK):(& ~I2C_LCD_BLINK);  // set cursor blink status
 
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // Send displycontrols
-    I2CMasterStop();                                                // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // send displaycontrols
+    I2CMasterStop();                                                // stop I2C connection to LCD
 }
 
 void I2C_LCD_display(uint8_t state)
 {
-    displaycontrol = displaycontrol state?( | I2C_LCD_DISPLAY):(& ~I2C_LCD_DISPLAY);  // Set display status
+    displaycontrol = displaycontrol state?( | I2C_LCD_DISPLAY):(& ~I2C_LCD_DISPLAY);  // set display status
 
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // Send displycontrols
-    I2CMasterStop();                                                // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // send displaycontrols
+    I2CMasterStop();                                                // stop I2C connection to LCD
 }
 
 void I2C_LCD_backlight(uint8_t state)
 {
     backlight = state;
 
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // Send displycontrols
-    I2CMasterStop();                                                // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // send displaycontrols
+    I2CMasterStop();                                                // stop I2C connection to LCD
 }
 
 void I2C_LCD_home(){
-    I2C_LCD_setCursor(1,1); // Set cursor to home position (row one, line one)
+    I2C_LCD_setCursor(1,1); // set cursor to home position (row one, line one)
 }
 
 void I2C_LCD_clear(){
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_CLEARDISPLAY);          // Send displayclear command
-    I2CMasterStop();                                    // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_CLEARDISPLAY);          // send displayclear command
+    I2CMasterStop();                                    // stop I2C connection to LCD
 }
 
 // These commands scroll the display without changing the RAM
 void I2C_LCD_scrollDisplayLeft() {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_CURSORSHIFT | I2C_LCD_DISPLAYMOVE | I2C_LCD_MOVELEFT);  // Send scroll left command
-    I2CMasterStop();    // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_CURSORSHIFT | I2C_LCD_DISPLAYMOVE | I2C_LCD_MOVELEFT);  // send scroll left command
+    I2CMasterStop();    // stop I2C connection to LCD
 }
 
 void I2C_LCD_scrollDisplayRight() {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_CURSORSHIFT | I2C_LCD_DISPLAYMOVE | I2C_LCD_MOVERIGHT); // Send scroll right command
-    I2CMasterStop();    // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_CURSORSHIFT | I2C_LCD_DISPLAYMOVE | I2C_LCD_MOVERIGHT); // send scroll right command
+    I2CMasterStop();    // stop I2C connection to LCD
 }
 
 // This is for text that flows Left to Right
 void I2C_LCD_leftToRight() {
-    displaymode |= I2C_LCD_ENTRYLEFT;   // Set displaymode to left entry
+    displaymode |= I2C_LCD_ENTRYLEFT;   // set displaymode to left entry
 
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_ENTRYMODESET | displaymode);    // Send entrymode command
-    I2CMasterStop();    // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_ENTRYMODESET | displaymode);    // send entrymode command
+    I2CMasterStop();    // stop I2C connection to LCD
 }
 
 // This is for text that flows Right to Left
 void I2C_LCD_rightToLeft() {
-    displaymode &= ~I2C_LCD_ENTRYLEFT;  // Set displaymode to right entry
+    displaymode &= ~I2C_LCD_ENTRYLEFT;  // set displaymode to right entry
 
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_ENTRYMODESET | displaymode);    // Send entrymode command
-    I2CMasterStop();    // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_ENTRYMODESET | displaymode);    // send entrymode command
+    I2CMasterStop();    // stop I2C connection to LCD
 }
 
 void I2C_LCD_cursorFixPosition(uint8_t state) {
-    displaymode = displaymode (state)? (| I2C_LCD_ENTRYSHIFTINCREMENT):(& ~I2C_LCD_ENTRYSHIFTINCREMENT);    // Set displaymode to entry shift - if state == true
+    displaymode = displaymode (state)? (| I2C_LCD_ENTRYSHIFTINCREMENT):(& ~I2C_LCD_ENTRYSHIFTINCREMENT);    // set displaymode to entry shift - if state == true
 
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_ENTRYMODESET | displaymode);    // Send fix cursor command
-    I2CMasterStop();    // Stop I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_ENTRYMODESET | displaymode);    // send fix cursor command
+    I2CMasterStop();    // stop I2C connection to LCD
 }
 
 // Allows us to fill the first 8 CGRAM locations
 // with custom characters
 void I2C_LCD_createChar(uint8_t location, uint8_t charmap[]) {
-    location &= 0x7; // Limit location to 4 bit (8 locations)
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // Start I2C connection to LCD
-    I2C_LCD_command4bit(I2C_LCD_SETCGRAMADDR | (location << 3));    // Send set CGram + ram address
-    for (uint8_t i=0; i<8; i++) {   // loop though the character lines
+    location &= 0x7;    // limit location to 4 bit (8 locations)
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // start I2C connection to LCD
+    I2C_LCD_command4bit(I2C_LCD_SETCGRAMADDR | (location << 3));    // send set CGram + ram address
+    for (uint8_t i=0; i<8; i++) {           // loop though the character lines
         I2C_LCD_write(charmap[i] & 0x1F);   // mask each line to 5 bit 
     }
-    I2CMasterStop();    // Stop I2C connection to LCD
+    I2CMasterStop();    // stop I2C connection to LCD
 }
 
 /**

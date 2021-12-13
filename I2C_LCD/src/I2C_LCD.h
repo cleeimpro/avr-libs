@@ -16,11 +16,11 @@
  */
 
 
-#ifndef _I2C_LCD_H                  // Prevents duplicate
+#ifndef _I2C_LCD_H                  // prevents duplicate
 #define _I2C_LCD_H   1              // forward declarations
 
-#include <avr/io.h>                 // Requires AVR Input/Output
-#include <inttypes.h>               // Requires Inttypes
+#include <avr/io.h>                 // requires AVR Input/Output
+#include <inttypes.h>               // requires Inttypes
 
 #define I2C_LCD_ADDRESS 0x4E        // full 8-bit address of the I2C-Modul
 
@@ -264,7 +264,7 @@ uint8_t displaymode;
 uint8_t row_offsets[4];
 
 
-#endif                                         // End prevent duplicate forward
+#endif                                         // end prevent duplicate forward
 /* _I2C_LCD_H */                               // declarations block
 /**
  * This file is part of I2C_LCD
