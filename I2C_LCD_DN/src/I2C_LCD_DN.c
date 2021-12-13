@@ -11,7 +11,7 @@
  *
  * @brief This library was created to display digital clock numbers fullsize on a 4x20 LCD.
  * 
- * The I2C-Master library from Peter Fleury is used for the I2C-connection.
+ * The I2C library from clefa is used for the I2C-connection.
  * The I2C-LCD initialization for a 4x20 LCD is already integrated in this Library.
  */
 
@@ -19,7 +19,7 @@
 #include "I2C_LCD_DN.h"
 #include "I2C_LCD.h"
 #include <util/delay.h>
-#include <I2CMaster.h>
+#include <I2C.h>
 
 void I2C_LCD_DN_init()
 {
@@ -66,7 +66,7 @@ void I2C_LCD_DN_write(uint8_t num, uint8_t col)
     case 8: I2C_LCD_DN_write8(col); break; 
     case 9: I2C_LCD_DN_write9(col); break;
     default:                                    // if number is not between 0-9 print Yen at given position
-        I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+        I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
         I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
         // write needed chars in this line
         I2C_LCD_write(B_SLASH);
@@ -91,14 +91,14 @@ void I2C_LCD_DN_write(uint8_t num, uint8_t col)
         I2C_LCD_write(RIGHT_BAR);
         I2C_LCD_write(LEFT_BAR);
         I2C_LCD_write(UPPER_BAR);
-        I2CMasterStop();                                    // stop I2C connection
+        I2C_stop();                                    // stop I2C connection
         break;
     }
 }
 
 void I2C_LCD_DN_write0(uint8_t col)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
     I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
     // write needed chars in this line
     I2C_LCD_write(FULL_BAR);
@@ -121,12 +121,12 @@ void I2C_LCD_DN_write0(uint8_t col)
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();                                    // stop I2C connection
+    I2C_stop();                                    // stop I2C connection
 }
 
 void I2C_LCD_DN_write1(uint8_t col)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
     I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
     // write needed chars in this line
     I2C_LCD_write(' ');
@@ -149,12 +149,12 @@ void I2C_LCD_DN_write1(uint8_t col)
     I2C_LCD_write(' ');
     I2C_LCD_write(' ');
     I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_write2(uint8_t col)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
     I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
     // write needed chars in this line
     I2C_LCD_write(UPPER_BAR);
@@ -177,12 +177,12 @@ void I2C_LCD_DN_write2(uint8_t col)
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(LOWER_BAR);
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_write3(uint8_t col)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
     I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
     // write needed chars in this line
     I2C_LCD_write(UPPER_BAR);
@@ -205,12 +205,12 @@ void I2C_LCD_DN_write3(uint8_t col)
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_write4(uint8_t col)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
     I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
     // write needed chars in this line
     I2C_LCD_write(FULL_BAR);
@@ -233,12 +233,12 @@ void I2C_LCD_DN_write4(uint8_t col)
     I2C_LCD_write(' ');
     I2C_LCD_write(FULL_BAR);
     I2C_LCD_write(' ');
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_write5(uint8_t col)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
     I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
     // write needed chars in this line
     I2C_LCD_write(FULL_BAR);
@@ -261,12 +261,12 @@ void I2C_LCD_DN_write5(uint8_t col)
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_write6(uint8_t col)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
     I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
     // write needed chars in this line
     I2C_LCD_write(FULL_BAR);
@@ -289,12 +289,12 @@ void I2C_LCD_DN_write6(uint8_t col)
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_write7(uint8_t col)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
     I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
     // write needed chars in this line
     I2C_LCD_write(UPPER_BAR);
@@ -317,12 +317,12 @@ void I2C_LCD_DN_write7(uint8_t col)
     I2C_LCD_write(' ');
     I2C_LCD_write(' ');
     I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_write8(uint8_t col)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
     I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
     // write needed chars in this line
     I2C_LCD_write(FULL_BAR);
@@ -345,12 +345,12 @@ void I2C_LCD_DN_write8(uint8_t col)
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_write9(uint8_t col)
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
     I2C_LCD_setCursorWOI2C(col, 1);                     // set cursor at top start position
     // write needed chars in this line
     I2C_LCD_write(FULL_BAR);
@@ -373,12 +373,12 @@ void I2C_LCD_DN_write9(uint8_t col)
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(LOWER_BAR);
     I2C_LCD_write(FULL_BAR);
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_printColon()
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
 
     I2C_LCD_setCursorWOI2C(COLON_COL, 2);
     I2C_LCD_write(RIGHT_DOT);
@@ -388,12 +388,12 @@ void I2C_LCD_DN_printColon()
     I2C_LCD_write(LEFT_DOT);
     colonState = 1;
 
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_clearColon()
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
 
     I2C_LCD_setCursorWOI2C(COLON_COL, 2);
     I2C_LCD_write(' ');
@@ -403,12 +403,12 @@ void I2C_LCD_DN_clearColon()
     I2C_LCD_write(' ');
     colonState = 0;
 
-    I2CMasterStop();
+    I2C_stop();
 }
 
 void I2C_LCD_DN_toggleColon()
 {
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
+    I2C_startWait(I2C_LCD_ADDRESS & ~I2C_WRITE);
     if (colonState)
     {
         I2C_LCD_DN_clearColon();
@@ -417,7 +417,7 @@ void I2C_LCD_DN_toggleColon()
     {
         I2C_LCD_DN_printColon();
     }
-    I2CMasterStop();
+    I2C_stop();
 }
 
 /**

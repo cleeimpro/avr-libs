@@ -11,7 +11,7 @@
  *
  * @brief This library was created to display digital clock numbers fullsize on a 4x20 LCD.
  * 
- * The I2C-Master library from Peter Fleury is used for the I2C-connection.
+ * The I2C library from clefa is used for the I2C-connection.
  * The I2C-LCD initialization for a 4x20 LCD is already integrated in this Library.
  */
 

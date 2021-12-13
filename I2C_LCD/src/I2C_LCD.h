@@ -12,7 +12,6 @@
  * with a Hitachi HD44780U controller and an I2C-I/O-Expander PCF8574 over I2C.
  * Maximum display dimensions: 1x80, 2x40, 4x20
  * 
- * The I2C-Master library from Peter Fleury is used for the I2C-connection.
  */
 
 
@@ -82,7 +81,7 @@
  * Need to be called only once
  * 
  * The I2C-Bus must be initialized in the main-file (f.e. 80kHz)
- * with this code: "I2CMasterInit(SCL_CLK)"
+ * with this code: "I2C_init(SCL_CLK)"
  * 
  * @param cols  LCD Colums  
  * @param lines LCD Rows
