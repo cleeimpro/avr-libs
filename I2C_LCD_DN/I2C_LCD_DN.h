@@ -16,11 +16,11 @@
  */
 
 
-#ifndef _I2C_LCD_DIGITALNUMBER_H        // Prevents duplicate
+#ifndef _I2C_LCD_DIGITALNUMBER_H        // prevents duplicate
 #define _I2C_LCD_DIGITALNUMBER_H   1    // forward declarations
 
 
-#include "I2C_LCD.h"                    // Requires LCD over I2C
+#include "I2C_LCD.h"                    // requires LCD over I2C
 
 // CGRAM addresses of the custom characters
 #define FULL_BAR    0xFF
@@ -157,7 +157,7 @@ void I2C_LCD_DN_toggleColon();
 /** @brief variable to store the state of the colon */
 uint8_t colonState;
 
-#endif                               // End prevent duplicate forward
+#endif                               // end prevent duplicate forward
 /* _I2C_LCD_H */                     // declarations block
 
 /**
