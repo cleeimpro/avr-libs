@@ -133,7 +133,8 @@ void I2C_LCD_setCursor(uint8_t col, uint8_t row)
 
 void I2C_LCD_cursor(uint8_t state)
 {
-    displaycontrol = displaycontrol state?( | I2C_LCD_CURSOR):(& ~I2C_LCD_CURSOR);  // set cursor status
+    displaycontrol &= ~I2C_LCD_CURSOR;                              // clear cursor status
+    displaycontrol |= state?(I2C_LCD_CURSOR):0;                     // set cursor status
 
     I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // start I2C connection to LCD
     I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // send displycontrols
@@ -142,7 +143,8 @@ void I2C_LCD_cursor(uint8_t state)
 
 void I2C_LCD_blink(uint8_t state)
 {
-    displaycontrol = displaycontrol state?( | I2C_LCD_BLINK):(& ~I2C_LCD_BLINK);  // set cursor blink status
+    displaycontrol &= ~I2C_LCD_BLINK;                               // clear cursor blink status
+    displaycontrol |= state?(I2C_LCD_BLINK) : 0;                    // set cursor blink status
 
     I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // start I2C connection to LCD
     I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // send displaycontrols
@@ -151,7 +153,8 @@ void I2C_LCD_blink(uint8_t state)
 
 void I2C_LCD_display(uint8_t state)
 {
-    displaycontrol = displaycontrol state?( | I2C_LCD_DISPLAY):(& ~I2C_LCD_DISPLAY);  // set display status
+    displaycontrol &= ~ I2C_LCD_DISPLAY;                            // clear display status
+    displaycontrol |= state?(I2C_LCD_DISPLAY):0;                    // set display status
 
     I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);               // start I2C connection to LCD
     I2C_LCD_command4bit(I2C_LCD_DISPLAYCONTROL | displaycontrol);   // send displaycontrols
@@ -209,9 +212,10 @@ void I2C_LCD_rightToLeft() {
 }
 
 void I2C_LCD_cursorFixPosition(uint8_t state) {
-    displaymode = displaymode (state)? (| I2C_LCD_ENTRYSHIFTINCREMENT):(& ~I2C_LCD_ENTRYSHIFTINCREMENT);    // set displaymode to entry shift - if state == true
+    displaymode &= ~ I2C_LCD_ENTRYSHIFTINCREMENT;               // clear entry shift mode
+    displaymode |= state? I2C_LCD_ENTRYSHIFTINCREMENT:0;        // set displaymode to entry shift - if state == true
 
-    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);   // start I2C connection to LCD
+    I2CMasterStartWait(I2C_LCD_ADDRESS & ~I2C_WRITE);           // start I2C connection to LCD
     I2C_LCD_command4bit(I2C_LCD_ENTRYMODESET | displaymode);    // send fix cursor command
     I2CMasterStop();    // stop I2C connection to LCD
 }
