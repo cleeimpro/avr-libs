@@ -1,0 +1,22 @@
+{
+    "name": "I2C",
+    "version": "1.0.0",
+    "description": "This library was created to use the I2C as master using the hardware I2C interface.",
+    "keywords": "twi, i2c",
+    "repository":
+    {
+      "type": "git",
+      "url": "https://git.clee.work/clefa/avr-libs.git"
+    },
+    "authors":
+    [
+      {
+        "name": "CleFa Media",
+        "email": "complete@gmx.at",
+        "url": "https://clefa.media"
+      }
+    ],
+    "license": "GPL-3.0-only",
+    "frameworks": "Arduino",
+    "platforms": "atmelavr"
+  }
