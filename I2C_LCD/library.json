@@ -1,21 +1,22 @@
 {
-    "name": "I2C_LCD",
-    "version": "1.0.1",
-    "description": "This library was created to connect a Liquid Crystal Display with a Hitachi HD44780U controller and an I2C-I/O-Expander PCF8574 over I2C.",
-    "keywords": "twi, lcd, i2c, hitachi, hd44780U",
-    "repository":
+  "name": "I2C_LCD",
+  "version": "1.0.1",
+  "description": "This library was created to connect a Liquid Crystal Display with a Hitachi HD44780U controller and an I2C-I/O-Expander PCF8574 over I2C. The I2CMaster-Library von Peter Fleury is required.",
+  "keywords": "twi, lcd, i2c, hitachi, hd44780U",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://git.clee.work/clefa/avr-libs.git"
+  },
+  "authors":
+  [
     {
-      "type": "git",
-      "url": "https://git.clee.work/clefa/avr-libs.git"
-    },
-    "authors":
-    [
-      {
-        "name": "CleFa Media",
-        "email": "complete@gmx.at",
-        "url": "https://clefa.media"
-      }
-    ],
-    "frameworks": "Arduino",
-    "platforms": "atmelavr"
-  }
+      "name": "CleFa Media",
+      "email": "complete@gmx.at",
+      "url": "https://clefa.media"
+    }
+  ],
+  "license": "GPL-3.0-only",
+  "frameworks": "Arduino",
+  "platforms": "atmelavr"
+}
