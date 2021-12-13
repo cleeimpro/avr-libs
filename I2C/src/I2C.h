@@ -53,9 +53,8 @@ uint8_t I2C_start(uint8_t addr);
  * with a loop to wait until the bus is free
  * 
  * @param addr slaveaddress
- * @return uint8_t success = 0
  */
-uint8_t I2C_startWait(uint8_t addr);
+void I2C_startWait(uint8_t addr);
 
 /** ===================================================
  * @brief function to call the function "I2C_start" again

@@ -1,6 +1,6 @@
 {
     "name": "I2C",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "This library was created to use the I2C as master using the hardware I2C interface.",
     "keywords": "twi, i2c, wire",
     "repository":
