@@ -10,6 +10,10 @@
  *
  * @brief This library was created to use the I2C as
  * master using the hardware I2C interface.
+ * 
+ * Current state: only as MASTER
+ * 
+ * based on Peter Fleurys I2CMaster 2005 
  */
 
 #ifndef _I2C_H                  // prevents duplicate
@@ -22,6 +26,10 @@
 #define I2C_READ        1
 /** defines the data direction (writing to I2C device) */
 #define I2C_WRITE       0
+
+// defines for function "read"
+#define I2C_ACK         1
+#define I2C_NAK         0
 
 /** ===================================================
  * @brief function initialize the I2C-Bus
@@ -36,7 +44,7 @@ void I2C_init(uint32_t scl_clk);
  * on the I2C-Bus to a given address
  * 
  * @param addr slaveaddress
- * @return uint8_t success
+ * @return uint8_t success = 0
  */
 uint8_t I2C_start(uint8_t addr);
 
@@ -45,15 +53,16 @@ uint8_t I2C_start(uint8_t addr);
  * with a loop to wait until the bus is free
  * 
  * @param addr slaveaddress
- * @return uint8_t success
+ * @return uint8_t success = 0
  */
 uint8_t I2C_startWait(uint8_t addr);
 
 /** ===================================================
- * @brief function to send the start flag again
+ * @brief function to call the function "I2C_start" again
+ * only for readability...
  * 
  * @param addr slaveaddress
- * @return uint8_t success
+ * @return uint8_t success = 0
  */
 uint8_t I2C_repStart(uint8_t addr);
 
@@ -62,7 +71,7 @@ uint8_t I2C_repStart(uint8_t addr);
  * to a slave device
  * 
  * @param data 1 byte data which would be send
- * @return uint8_t success
+ * @return uint8_t success = 0
  */
 uint8_t I2C_write(uint8_t data);
 
@@ -71,8 +80,8 @@ uint8_t I2C_write(uint8_t data);
  * and send back an acknowledge 
  * or an not acknowledge
  * 
- * @param ack ack/nak
- * @return uint8_t success
+ * @param ack I2C_ACK / I2C_NAK
+ * @return uint8_t byte read from device
  */
 uint8_t I2C_read(uint8_t ack);
 
