@@ -1,0 +1,30 @@
+{
+  "name": "I2C_LCD_DN",
+  "version": "1.0.1",
+  "description": "This library was created to display digital clock numbers fullsize on a 4x20 LCD. The I2C-Master library from Peter Fleury is used for the I2C-connection. The I2C-LCD initialization for a 4x20 LCD is already integrated in this Library.",
+  "keywords": "twi, lcd, i2c,digitalnumber, dn, hitachi, hd44780U",
+  "repository":
+  {
+    "type": "git",
+    "url": "https://git.clee.work/clefa/avr-libs.git"
+  },
+  "authors":
+  [
+    {
+      "name": "CleFa Media",
+      "email": "complete@gmx.at",
+      "url": "https://clefa.media"
+    }
+  ],
+  "license": "GPL-3.0-only",
+  "frameworks": "Arduino",
+  "platforms": "atmelavr",
+  "dependencies":
+    [
+      {
+        "owner": "clefa",
+        "name": "I2C_LCD",
+        "version": "^1.0.3"
+      }
+    ]
+}

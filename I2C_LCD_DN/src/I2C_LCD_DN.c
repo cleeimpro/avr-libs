@@ -1,3 +1,21 @@
+/**
+ * @file I2C_LCD_DN.c
+ *
+ * @author ClefaMedia
+ *
+ * @version 1.0
+ *
+ * @copyright
+ * Copyright (C) ClefaMedia 2021. 
+ * All Rights GNU GLP Licensed.
+ *
+ * @brief This library was created to display digital clock numbers fullsize on a 4x20 LCD.
+ * 
+ * The I2C-Master library from Peter Fleury is used for the I2C-connection.
+ * The I2C-LCD initialization for a 4x20 LCD is already integrated in this Library.
+ */
+
+
 #include "I2C_LCD_DN.h"
 #include "I2C_LCD.h"
 #include <util/delay.h>
@@ -401,3 +419,20 @@ void I2C_LCD_DN_toggleColon()
     }
     I2CMasterStop();
 }
+
+/**
+ * This file is part of I2C_LCD_DN Library
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
